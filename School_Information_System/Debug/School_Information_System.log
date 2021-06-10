@@ -1,0 +1,3 @@
+﻿  School_Information_System.cpp
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(91): error C4716: 'main_menu': must return a value
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(79): error C4716: 'line': must return a value
