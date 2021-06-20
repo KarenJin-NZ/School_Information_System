@@ -6,8 +6,8 @@
 #include<fstream>
 using namespace std;
 
-//declare functions
-int line();
+//declare function prototype
+void line();
 int main_menu();
 void contact_detail();
 void latest_event();
@@ -23,6 +23,7 @@ void editStudent();//edit student record
 void deleteStudent();//delete student record
 void updateStudent();//update student record
 void displayStudent();//view student record
+string LearningProgress(float);//convert average subject score to learning progress, >=80:Achieved; >=50 and <80: Progressing; <50: Help
 
 //declare structure
 struct Teacher //structure for teacher record
@@ -53,14 +54,6 @@ struct Parent //structure for parent record
     string password_p;
 };
 
-struct Student //structure for student record
-{
-    string full_name_s;
-    string gender_s;
-    string class_no_s;
-    Subject mark;//nested structure
-};
-
 //nested structure
 struct Subject//nested structure for student record
 {
@@ -69,12 +62,16 @@ struct Subject//nested structure for student record
     int writing;
     int reading;
     int sports;
+    float average;
+    string progress;
 };
 
-
-struct LearningProgress //tbc
+struct Student //structure for student record
 {
-    
+    string full_name_s;
+    string gender_s;
+    string class_no_s;
+    Subject mark;
 };
 
 //delcare global varialbe
@@ -86,46 +83,55 @@ int main()
 {
     //title of the project
     cout << "\n\t\t\tSchool Information System";
-    line();
-    
+    int option = 0;//declare local variable
+             
     //display main menu
-    main_menu();
-    int option=0;//declare local variable
-    cout << "\nEnter your option: \n";
-    cin >> option;
-    switch (option)
+    do
     {
-    case 1: cout << "Glen Eden Intermediate School" << endl; break;
-    case 2: {
-        contact_detail(); break;
-    }
-    case 3: {
-        latest_event(); break;
-    }
-    case 4: {
-        term_dates(); break;
-    }
-    case 5: {
-        teacher_screen(); break;
-    }
-    case 6: {
-        parent_screen(); break;
-    }
-    case 7: {
-        admin_screen(); break;
-    }
-    default:cout << "Please enter a value between 1 and 7.\n";
-        break;
-    }
+        option = main_menu();
 
+        switch (option)
+        {
+        case 1: {
+            line();
+            cout << "\t\t\tGlen Eden Intermediate School" << endl;
+            line();
+            break;
+        }
+        case 2: {
+            contact_detail(); break;
+        }
+        case 3: {
+            latest_event(); break;
+        }
+        case 4: {
+            term_dates(); break;
+        }
+        case 5: {
+            teacher_screen(); break;
+        }
+        case 6: {
+            parent_screen(); break;
+        }
+        case 7: {
+            admin_screen(); break;
+        }
+        case 8: {
+            cout << "\nExiting the program...";
+        }
+        default:cout << "Please enter a value between 1 and 7.\n";
+            break;
+        }
+    } while (option!=8);
 }
 
-int line()
+void line()
 {
     cout << "\n";
     cout << "\t\t\t**********************************";
     cout << "\n";
 }
+
 int main_menu()
 {
     //declare local variable
@@ -137,26 +143,37 @@ int main_menu()
     cout << "\n\t\t\t5. Teacher Login/Registration";
     cout << "\n\t\t\t6. Parent Login/Registration";
     cout << "\n\t\t\t7. Admin";
+    cout << "\n\t\t\t8. Exit";
+    cout << "\nPlease select an option from the menu: ";
+    cin >> option;
+    return option;
 }
 
 void contact_detail()
 {
-    cout << "\nAddress: 23 Kaurilands Road, Titirangi, Auckland 0604";
-    cout << "\nEmail: office@geis.school.nz";
-    cout << "\nPhone: +64 9 817 0032";
+    line();
+    cout << "\t\t\tContact Details";
+    line();
+    cout << "\n\t\t\tAddress: 23 Kaurilands Road, Titirangi, Auckland 0604";
+    cout << "\n\t\t\tEmail: office@geis.school.nz";
+    cout << "\n\t\t\tPhone: +64 9 817 0032";
+    line();
 }
 
 void latest_event()
 {
+    line();
     cout << "\n\t\t\tLatest Events";
     line();
     cout << "\t\t\tCross Country Event: 4 July 2021";
     cout << "\n\t\t\tMufty Day: 8 August 2021";
     cout << "\n\t\t\tSwimming Competition: 11 November 2021";
+    line();
 }
 
 void term_dates()
 {
+    line();
     cout << "\n\t\t\tSchool Terms";
     line();
     cout << "\t\t\tTerm 1: 1 February to 16 April\n";
@@ -167,38 +184,39 @@ void term_dates()
     cout << "\t\t\tSchool Holidays: 2 October to 17 October\n";
     cout << "\t\t\tTerm 4: 18 October to 20 December\n";
     cout << "\t\t\tSchool Holidays: From school's closing date until opening date of school the following year\n";
+    line();
 }
 
 void teacher_screen()//Karen
 {
     //declare local varialbe
     int choice = 0;
-    cout << "\n\t\t\tWelcome! Teacher!";
-    line();
-    cout << "\n\t\t\t1. New Teacher Registration";
-    cout << "\n\t\t\t2. Teacher Login";
-    line();
-    cout << "\nEnter your choice: ";
     
-    
-    //call function
-
-    switch (choice)
+    do
     {
-    case 1: {
-        register_t(); break;
-    }
-    case 2: {
-        login_t(); break;
-    }
-    default:cout << "Please enter a value between 1 and 2.\n";
-        break;
-    }
+        cout << "\n\t\t\tWelcome! Teacher!";
+        line();
+        cout << "\n\t\t\t1. New Teacher Registration";
+        cout << "\n\t\t\t2. Teacher Login";
+        line();
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1: {
+            register_t(); break;//call function
+        }
+        case 2: {
+            login_t(); break;//call function
+        }
+        default:cout << "Please enter a value between 1 and 2.\n";
+            break;
+        }
+    } while (choice==1 || choice ==2);
 }
 
 void register_t()
 {
-
     line();
     cout << "Hello! Welcome to the teacher registration process";
     line();
@@ -364,6 +382,22 @@ void updateStudent()
 void displayStudent()
 {
 
+}
+
+string LearningProgress(float average )
+{
+    if (average>=80)
+    {
+        return "Achieved";
+    }
+    else if (average >=50 && average <80)
+    {
+        return "Progressing";
+    }
+    else
+    {
+        return "Help";
+    }
 }
 
 
