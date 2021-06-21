@@ -310,7 +310,6 @@ void login_t()
         
         teacherFile.close();
     } while (i < 3);
-    
 }
 
 void student_screen()
@@ -361,30 +360,47 @@ void student_screen()
 
 void addStudent()
 {
+    //ask which class for file access
+    string fileName;
+    line();
+    cout << "\n\t\t\tWhich class would you like to add the student record(101/102/103): ";
+    cin >> fileName;
+
+    //access file
+
+
+
+
+
+
+    
+
 
 }
 
 void editStudent()
 {
+    //seekp
 
 }
 
 void deleteStudent()
 {
-
+    //temp file to swap
 }
 
 void updateStudent()
 {
-
+    //update another term observation observation
 }
 
 void displayStudent()
 {
+    //display the way it is
 
 }
 
-string LearningProgress(float average )
+string LearningProgress(float average)
 {
     if (average>=80)
     {
