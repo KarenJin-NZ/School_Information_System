@@ -139,7 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Goto.cpp" />
     <ClCompile Include="School_Information_System.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Goto.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
