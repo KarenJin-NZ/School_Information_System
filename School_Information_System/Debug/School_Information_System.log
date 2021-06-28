@@ -1,3 +1,10 @@
 ﻿  School_Information_System.cpp
-C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(626,9): warning C4551: function call missing argument list
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(394,13): warning C4551: function call missing argument list
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(657,34): warning C4804: '>': unsafe use of type 'bool' in operation
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(738,34): warning C4804: '>': unsafe use of type 'bool' in operation
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(819,34): warning C4804: '>': unsafe use of type 'bool' in operation
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(928,33): warning C4804: '>': unsafe use of type 'bool' in operation
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(963,34): warning C4804: '>': unsafe use of type 'bool' in operation
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(998,34): warning C4804: '>': unsafe use of type 'bool' in operation
+C:\Users\karen\source\repos\School_Information_System\School_Information_System\School_Information_System.cpp(1288,9): warning C4551: function call missing argument list
   School_Information_System.vcxproj -> C:\Users\karen\source\repos\School_Information_System\Debug\School_Information_System.exe
