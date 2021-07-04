@@ -1,7 +1,0 @@
-Full name: Test Student
-Gender: Female
-Maths: Achieved
-Science: Achieved
-Writing: Progressing
-Reading: Help
-Sports: Progressing

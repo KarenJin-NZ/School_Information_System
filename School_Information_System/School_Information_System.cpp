@@ -1,7 +1,4 @@
-﻿// School_Information_System.cpp : This file contains the 'main' function. Program execution begins and ends there.
-// Group Assignment - CS103
-
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <fstream>
 #include "Goto.h"
@@ -19,21 +16,23 @@ void parent_screen();
 void register_p();
 void login_p();
 void admin_screen();
+void Admin_Dash();
+void Class_Records();
+void Parent_Page();
+void parent_dash();
+void report();
 void register_t();//new teacher register
 void login_t();//teacher login
 void student_screen();//student record
 void addStudent();//add student record
-void editStudent();//edit student record
-//void editStudent(char []);//edit student record
-void deleteStudent();//delete student record
-//void updateStudent();//update student record, Same as edit, no needed here
+void editStudent(char []);//edit student record
+void deleteStudent(char[]);
 void displayStudent();//view student record
 string LearningProgress(int);//convert each subject score to learning progress, >=80:Achieved; >=50 and <80: Progressing; <50: Help
 
 //declare structure
 struct Teacher //structure for teacher record
 {
-    //string full_name_t;
     char full_name_t[50];
     string gender_t;
     string dob_t;
@@ -47,7 +46,6 @@ struct Teacher //structure for teacher record
 
 struct Parent //structure for parent record
 {
-    //string full_name_p;
     char full_name_p[50];
     string gender_p;
     string dob_p;
@@ -60,29 +58,11 @@ struct Parent //structure for parent record
     char password_p[20];
 };
 
-//nested structure
-//struct Subject//nested structure for student record
-//{
-//    int maths;
-//    int science;
-//    int writing;
-//    int reading;
-//    int sports;
-//    //float average;
-//    string progress_maths;
-//    string progress_science;
-//    string progress_writing;
-//    string progress_reading;
-//    string progress_sports;
-//
-//};
-
 struct Student //structure for student record
 {
     char full_name_s[50];
     string gender_s;
     string class_no_s;
-    //Subject mark;
     int maths;
     int science;
     int writing;
@@ -95,16 +75,15 @@ struct Student //structure for student record
     string progress_sports;
 };
 
-
-
-
-
 //delcare global varialbe
 fstream teacherFile, studentFile, ParentFile;
 fstream class101, class102, class103;
 struct Teacher newTeacher;
 struct Student student;
 struct Parent newParent;
+char name[50];
+char search_name[50];
+int position = 0;
 
 
 int main()
@@ -120,7 +99,7 @@ int main()
         {
         case 1: { system("CLS");
             line();
-            cout << "\t\t\tGlen Eden Intermediate School" << endl;
+            cout << "\t\t\tGlen Eden Intermediate School Information System" << endl;
             line();
             _getch();
             break;
@@ -146,7 +125,7 @@ int main()
         case 8: {
             cout << "\nExiting the program...";
         }
-        default:cout << "Please enter a value between 1 and 7.\n";
+        default:cout << "Please enter a value between 1 and 8.\n";
             break;
         }
     } while (option != 8);
@@ -203,7 +182,6 @@ void latest_event()
     cout << "\n\t\t\tSwimming Competition: 11 November 2021";
     line();
     _getch();
-    system("CLS");
 }
 
 void term_dates()
@@ -222,7 +200,6 @@ void term_dates()
     cout << "\t\t\tSchool Holidays: From school's closing date until opening date of school the following year\n";
     line();
     _getch();
-    system("CLS");
 }
 
 void teacher_screen()//Karen
@@ -232,6 +209,7 @@ void teacher_screen()//Karen
 
     do
     {
+        //system("CLS");
         cout << "\n\t\t\tWelcome! Teacher!";
         line();
         cout << "\n\t\t\t1. New Teacher Registration";
@@ -255,7 +233,6 @@ void teacher_screen()//Karen
 
 void register_t()
 {
-    system("CLS");
     line();
     cout << "\t\tHello! Welcome to the teacher registration process";
     line();
@@ -267,58 +244,36 @@ void register_t()
     {
         //read teacher data
         cout << "\n\tEnter your full name: ";
-        //cin >> newTeacher.full_name_t;
         cout << "\n\tGender(Male, Female, Non-Binary): ";
-        //cin >> newTeacher.gender_t;
         cout << "\n\tDate of Birth: ";
-        //cin >> newTeacher.dob_t;
         cout << "\n\tEmail address: ";
-        //cin >> newTeacher.email_t;
         cout << "\n\tContact Number: ";
-        //cin >> newTeacher.contact_no_t;
-        cout << "\n\tClassroom number (number): ";
-        //cin >> newTeacher.class_no_t;
+        cout << "\n\tClassroom number (101/102/103): ";
         cout << "\n\tWhich year do you teach (number): ";
-        //cin >> newTeacher.year_t;
         cout << "\n\tEnter your username: ";
-        //cin >> newTeacher.username_t;
         cout << "\n\tEnter your password: ";
-        //cin >> newTeacher.password_t;
+
 
         cin.ignore();
         Gotoxy(30, 5);
-        //cin >> newTeacher.full_name_t;
         cin.getline(newTeacher.full_name_t, 50);
-
         Gotoxy(42, 6);
         cin >> newTeacher.gender_t;
-
         Gotoxy(23, 7);
         cin >> newTeacher.dob_t;
-
         Gotoxy(23, 8);
         cin >> newTeacher.email_t;
-
         Gotoxy(24, 9);
         cin >> newTeacher.contact_no_t;
-
-        Gotoxy(35, 10);
+        Gotoxy(40, 10);
         cin >> newTeacher.class_no_t;
-
         Gotoxy(42, 11);
         cin >> newTeacher.year_t;
-
         Gotoxy(29, 12);
         cin >> newTeacher.username_t;
-
         Gotoxy(29, 13);
         cin >> newTeacher.password_t;
-        
         cin.ignore();
-
-        //open file for writing
-        ofstream teacherFile;
-        teacherFile.open("teacher.txt", ios::out | ios::app | ios::binary);
 
         teacherFile << newTeacher.full_name_t << endl;
         teacherFile << newTeacher.gender_t << endl;
@@ -336,24 +291,25 @@ void register_t()
     cout << "\t\t\t\tRegistration Successful!!!";
     line();
     student_screen();//after completing registration, direct to student screen (login)
+    _getch();
+    system("CLS");
 }
 
 void login_t()
 {
+
     char usernameSearch_t[20];
     char passwordSearch_t[20];
     int i = 0;
     bool isFound = false;
     do
     {
-        //search for teacher record
         cout << "\nEnter your username: ";
         cin >> usernameSearch_t;
         cout << "Enter your password: ";
         cin >> passwordSearch_t;
 
         ifstream teacherFile;
-        //open in read mode
         teacherFile.open("teacher.txt", ios::in | ios::binary);
 
         //search for record
@@ -368,32 +324,41 @@ void login_t()
                 //validate record
                 if (strcmp(newTeacher.username_t, usernameSearch_t) == 0 && strcmp(newTeacher.password_t, passwordSearch_t) == 0)
                 {
-                    //if validated, lead to another screen - student screen
+                    //if validated, lead to another screen - student screenis
                     isFound = true;
                     student_screen();//nested scenario, after login, show nested student record menu
-                    
                     break;
                 }
                 else
                 {
-                    isFound = false; break;
-                }              
+                    isFound = false;
+                }
             }
         }
-        if (isFound == false)
+        if (isFound == false && i<2)
         {
             cout << "Invalid username and password, please try again...\n";
+            _getch();
         }
         i++;
         teacherFile.close();
+        //if (i == 3 && isFound==false)
+        //{
+        //    cout << "\nToo Many Attempts!!!Please try later...\n";
+        //    line();
+        //    break;
+        //    //main();
+        //    //exit;
+        //}
 
-        if (i == 3)
-        {
-            cout << "\nToo Many Attempts!!!Please try later...\n";
-            line();
-            exit;
-        }
     } while (i < 3);
+
+    if (i == 3 && isFound == false)
+    {
+        cout << "\nToo Many Attempts!!!Send you Back to Main Screen!!!Please try again later...\n";
+        line();
+        main();
+    }
 
 }
 
@@ -401,11 +366,14 @@ void student_screen()
 {
     //student menu after teacher logined
     line();
-    cout << "Welcome to Student Record Menu!" << endl;
+    cout << "\t\t\tWelcome to Student Record Menu!" << endl;
+    line();
     cout << "\n\t\t\t1. Add Student";
     cout << "\n\t\t\t2. Edit Student Record";
     cout << "\n\t\t\t3. Delete Student Record";
-    cout << "\n\t\t\t4. View the Records";
+    cout << "\n\t\t\t4. Update Student Record";
+    cout << "\n\t\t\t5. View the Records";
+    cout << "\n\t\t\t6. Back to Main Menu";
     line();
 
     //declare variable
@@ -422,16 +390,23 @@ void student_screen()
         break;
     }
     case 2: {
-        editStudent();
+        editStudent(search_name);
         break;
     }
     case 3: {
-        deleteStudent();
+        deleteStudent(name);
         break;
     }
     case 4: {
+        editStudent(search_name);
+        break;
+    }
+    case 5: {
         displayStudent();
         break;
+    }
+    case 6: {
+        main();
     }
     default:cout << "\nInvalid option, please choose between 1 and 5" << endl;
         break;
@@ -440,13 +415,13 @@ void student_screen()
 
 void addStudent()
 {
-    //switch case for access separte class files, class
-
     int ClassSelection;
     bool StudentDone = false;
 
     do
     {
+        //system("CLS");
+        line();
         cout << "\n\t\t\tWelcome to Add Student Record Page";
         line();
         cout << "\t\t\t1. Class 101\n";
@@ -455,30 +430,38 @@ void addStudent()
         cout << "\t\t\t4. Return to previous page\n";
         cout << "Please enter your choice: ";
         cin >> ClassSelection;
-
+        system("CLS");
+        //switch case for access separte class files, class
         switch (ClassSelection)
         {
         case 1: {
-            
+
             class101.open("class_101.txt", ios::out | ios::app | ios::binary);//open class101 file
 
             if (class101.is_open())
             {
                 //read student data
                 cin.ignore();
-                cout << "\n\tEnter your full name: ";
-                cin.getline(student.full_name_s, 50);
+                cout << "\n\n\tEnter your full name: ";
                 cout << "\n\tGender(Male, Female, Non-Binary): ";
-                cin >> student.gender_s;
                 cout << "\n\tMaths Score (0-100): ";
-                cin >> student.maths;
                 cout << "\n\tScience Score (0-100): ";
-                cin >> student.science;
                 cout << "\n\tWriting Score (0-100): ";
-                cin >> student.writing;
                 cout << "\n\tReading Score (0-100): ";
-                cin >> student.reading;
                 cout << "\n\tSports Score (0-100): ";
+                Gotoxy(29, 2);
+                cin.getline(student.full_name_s, 50);
+                Gotoxy(41, 3);
+                cin >> student.gender_s;
+                Gotoxy(29, 4);
+                cin >> student.maths;
+                Gotoxy(30, 5);
+                cin >> student.science;
+                Gotoxy(30, 6);
+                cin >> student.writing;
+                Gotoxy(30, 7);
+                cin >> student.reading;
+                Gotoxy(30, 8);
                 cin >> student.sports;
 
                 student.progress_maths = LearningProgress(student.maths);
@@ -491,17 +474,19 @@ void addStudent()
                 ofstream class101;
                 class101.open("class_101.txt", ios::out | ios::app | ios::binary);
 
-                class101 << "Full name: " << student.full_name_s << endl;
-                class101 << "Gender: " << student.gender_s << endl;
-                class101 << "Maths: " << student.progress_maths << endl;
-                class101 << "Science: " << student.progress_science << endl;
-                class101 << "Writing: " << student.progress_writing << endl;
-                class101 << "Reading: " << student.progress_reading << endl;
-                class101 << "Sports: " << student.progress_sports << endl;
+                class101 << "Full name: " << student.full_name_s;
+                class101 << "    Gender: " << student.gender_s;
+                class101 << "    Maths: " << student.progress_maths;
+                class101 << "    Science: " << student.progress_science;
+                class101 << "    Writing: " << student.progress_writing;
+                class101 << "    Reading: " << student.progress_reading;
+                class101 << "    Sports: " << student.progress_sports << endl;
             }
             else
             {
                 cout << "\nUnable to access file....\n";
+                _getch();
+                system("CLS");
             }
             class101.close();//save and close file
             cout << "\nNew Student Record Added Successfully\n";
@@ -515,19 +500,26 @@ void addStudent()
             {
                 //read student data
                 cin.ignore();
-                cout << "\n\tEnter your full name: ";
-                cin.getline(student.full_name_s, 50);
+                cout << "\n\n\tEnter your full name: ";
                 cout << "\n\tGender(Male, Female, Non-Binary): ";
-                cin >> student.gender_s;
                 cout << "\n\tMaths Score (0-100): ";
-                cin >> student.maths;
                 cout << "\n\tScience Score (0-100): ";
-                cin >> student.science;
                 cout << "\n\tWriting Score (0-100): ";
-                cin >> student.writing;
                 cout << "\n\tReading Score (0-100): ";
-                cin >> student.reading;
                 cout << "\n\tSports Score (0-100): ";
+                Gotoxy(29, 2);
+                cin.getline(student.full_name_s, 50);
+                Gotoxy(41, 3);
+                cin >> student.gender_s;
+                Gotoxy(29, 4);
+                cin >> student.maths;
+                Gotoxy(30, 5);
+                cin >> student.science;
+                Gotoxy(30, 6);
+                cin >> student.writing;
+                Gotoxy(30, 7);
+                cin >> student.reading;
+                Gotoxy(30, 8);
                 cin >> student.sports;
 
                 student.progress_maths = LearningProgress(student.maths);
@@ -540,17 +532,20 @@ void addStudent()
                 ofstream class102;
                 class102.open("class_102.txt", ios::out | ios::app | ios::binary);
 
-                class102 << "Full name: " << student.full_name_s << endl;
-                class102 << "Gender: " << student.gender_s << endl;
-                class102 << "Maths: " << student.progress_maths << endl;
-                class102 << "Science: " << student.progress_science << endl;
-                class102 << "Writing: " << student.progress_writing << endl;
-                class102 << "Reading: " << student.progress_reading << endl;
-                class102 << "Sports: " << student.progress_sports << endl;
+                class102 << "Full name: " << student.full_name_s;
+                class102 << "    Gender: " << student.gender_s;
+                class102 << "    Maths: " << student.progress_maths;
+                class102 << "    Science: " << student.progress_science;
+                class102 << "    Writing: " << student.progress_writing;
+                class102 << "    Reading: " << student.progress_reading;
+                class102 << "    Sports: " << student.progress_sports << endl;
+                _getch();
             }
             else
             {
                 cout << "\nUnable to access file....\n";
+                _getch();
+                system("CLS");
             }
 
             class102.close();//save and close file
@@ -565,19 +560,26 @@ void addStudent()
             {
                 //read student data
                 cin.ignore();
-                cout << "\n\tEnter your full name: ";
-                cin.getline(student.full_name_s, 50);
+                cout << "\n\n\tEnter your full name: ";
                 cout << "\n\tGender(Male, Female, Non-Binary): ";
-                cin >> student.gender_s;
                 cout << "\n\tMaths Score (0-100): ";
-                cin >> student.maths;
                 cout << "\n\tScience Score (0-100): ";
-                cin >> student.science;
                 cout << "\n\tWriting Score (0-100): ";
-                cin >> student.writing;
                 cout << "\n\tReading Score (0-100): ";
-                cin >> student.reading;
                 cout << "\n\tSports Score (0-100): ";
+                Gotoxy(29, 2);
+                cin.getline(student.full_name_s, 50);
+                Gotoxy(41, 3);
+                cin >> student.gender_s;
+                Gotoxy(29, 4);
+                cin >> student.maths;
+                Gotoxy(30, 5);
+                cin >> student.science;
+                Gotoxy(30, 6);
+                cin >> student.writing;
+                Gotoxy(30, 7);
+                cin >> student.reading;
+                Gotoxy(30, 8);
                 cin >> student.sports;
 
                 student.progress_maths = LearningProgress(student.maths);
@@ -590,17 +592,21 @@ void addStudent()
                 ofstream class103;
                 class103.open("class_103.txt", ios::out | ios::app | ios::binary);
 
-                class103 << "Full name: " << student.full_name_s << endl;
-                class103 << "Gender: " << student.gender_s << endl;
-                class103 << "Maths: " << student.progress_maths << endl;
-                class103 << "Science: " << student.progress_science << endl;
-                class103 << "Writing: " << student.progress_writing << endl;
-                class103 << "Reading: " << student.progress_reading << endl;
-                class103 << "Sports: " << student.progress_sports << endl;
+                class103 << "Full name: " << student.full_name_s;
+                class103 << "    Gender: " << student.gender_s;
+                class103 << "    Maths: " << student.progress_maths;
+                class103 << "    Science: " << student.progress_science;
+                class103 << "    Writing: " << student.progress_writing;
+                class103 << "    Reading: " << student.progress_reading;
+                class103 << "    Sports: " << student.progress_sports << endl;
+                _getch();
+                system("CLS");
             }
             else
             {
                 cout << "\nUnable to access file....\n";
+                _getch();
+                system("CLS");
             }
 
             class103.close();//save and close file
@@ -612,6 +618,8 @@ void addStudent()
             student_screen();
         }
         default:cout << "\nPlease enter correct option.\n";
+            _getch();
+            system("CLS");
             break;
         }
 
@@ -619,413 +627,330 @@ void addStudent()
 
 }
 
-void editStudent()
+
+void editStudent(char search_name[50])
 {
-    //int choice;
-    //int position = 0;
-    //bool isFound = false;
+    int edit_choice;
+    bool edit_done = false;
 
-    int choice;
-    //bool isFound = false;
-    fstream temp;
-    int skip = 0;
-    string line;
-    char name[50];
-    //switch case to ask which file to edit
-    cout << "\n\t\t\tWelcome to Eidt Student Record Page";
-    cout << "\t\t\t1. Class 101\n";
-    cout << "\t\t\t2. Class 102\n";
-    cout << "\t\t\t3. Class 103\n";
-    cout << "\t\t\t4. Return to previous page\n";
-    cout << "Please enter your choice: ";
-    cin >> choice;
 
-    switch (choice)
+    do
     {
-    case 1: {
-        //delete record first
-        cout << "\nPlease enter the name of student you want to delete: ";
-        cin.getline(name, 50);
-        cin.ignore();
+        line();
+        cout << "\n\t\t\tWelcome to Edit Student Record Page\n";
+        line();
+        cout << "\t\t\t1. Class 101\n";
+        cout << "\t\t\t2. Class 102\n";
+        cout << "\t\t\t3. Class 103\n";
+        cout << "\t\t\t4. Return to previous page\n";
+        cout << "Please enter your choice: ";
+        cin >> edit_choice;
 
-        class101.open("class_101.txt", ios::in | ios::out | ios::binary);
-        temp.open("temp.txt", ios::in | ios::out | ios::binary);
-
-        while (getline(class101, line))
+        switch (edit_choice)
         {
+        case 1: {
+            class101.open("class_101.txt", ios::in | ios::out | ios::binary);
+            cout << "\n\tSearch Student in Class 101\n";
+            cin.ignore();
+            cout << "\n\tEnter Student Full Name: ";
+            cin.getline(student.full_name_s, 50);
 
-            if (line != name && (!skip > 0))
+            if (class101.is_open())
             {
-                temp << line << endl;
+                while (!class101.eof())
+                {
+                    class101.read(reinterpret_cast<char*>(&student), sizeof(student));
+                    position = class101.tellg();
+
+                    if (strcmp(search_name, student.full_name_s) == 0)
+                    {
+                        cout << "\n\tRecord Found:\n";
+                        line();
+                        cout << "Full name: " << student.full_name_s;
+                        cout << "    Gender: " << student.gender_s;
+                        cout << "    Maths: " << student.progress_maths;
+                        cout << "    Science: " << student.progress_science;
+                        cout << "    Writing: " << student.progress_writing;
+                        cout << "    Reading: " << student.progress_reading;
+                        cout << "    Sports: " << student.progress_sports << endl;
+
+                        class101.seekp(position = (sizeof(student)));
+                        cout << "\n\n\tEdit Student Record";
+                        cout << "\n\tPlease enter student Information";
+                        cout << "\n\tMaths Score (0-100): ";
+                        cin >> student.maths;
+                        cout << "\n\tScience Score (0-100): ";
+                        cin >> student.science;
+                        cout << "\n\tWriting Score (0-100): ";
+                        cin >> student.writing;
+                        cout << "\n\tReading Score (0-100): ";
+                        cin >> student.reading;
+                        cout << "\n\tSports Score (0-100): ";
+                        cin >> student.sports;
+
+                        cout << "\n\n\tStudent Record Edit Successful\n";
+                        class101.write(reinterpret_cast<char*>(&student), sizeof(student));//store record in binary
+                        break;
+                    }
+                }
             }
             else
             {
-                if (skip == 0)
-                {
-                    skip = 6;//skip the next 6 lines also
-                }
-                else
-                {
-                    --skip;
-                }
+                cout << "\nUnable to access file...";
             }
+            class101.close();
+            break;
         }
-        class101.close();
-        temp.close();
-        remove("class_101.txt");
-        rename("temp.txt", "class_101.txt");
+        case 2: {
 
-        //add new record
-        class101.open("class_101.txt", ios::out | ios::app | ios::binary);//open class101 file
-
-        if (class101.is_open())
-        {
-            //read student data
+            class102.open("class_102.txt", ios::in | ios::out | ios::binary);
+            cout << "\n\tSearch Student in Class 102\n";
             cin.ignore();
-            cout << "\n\tEnter your full name: ";
+            cout << "\n\tEnter Student Full Name: ";
             cin.getline(student.full_name_s, 50);
-            cout << "\n\tGender(Male, Female, Non-Binary): ";
-            cin >> student.gender_s;
-            cout << "\n\tMaths Score (0-100): ";
-            cin >> student.maths;
-            cout << "\n\tScience Score (0-100): ";
-            cin >> student.science;
-            cout << "\n\tWriting Score (0-100): ";
-            cin >> student.writing;
-            cout << "\n\tReading Score (0-100): ";
-            cin >> student.reading;
-            cout << "\n\tSports Score (0-100): ";
-            cin >> student.sports;
 
-            student.progress_maths = LearningProgress(student.maths);
-            student.progress_science = LearningProgress(student.science);
-            student.progress_writing = LearningProgress(student.writing);
-            student.progress_reading = LearningProgress(student.reading);
-            student.progress_sports = LearningProgress(student.sports);
-
-            //open file for writing
-            ofstream class101;
-            class101.open("class_101.txt", ios::out | ios::app | ios::binary);
-
-            class101 << "Full name: " << student.full_name_s << endl;
-            class101 << "Gender: " << student.gender_s << endl;
-            class101 << "Maths: " << student.progress_maths << endl;
-            class101 << "Science: " << student.progress_science << endl;
-            class101 << "Writing: " << student.progress_writing << endl;
-            class101 << "Reading: " << student.progress_reading << endl;
-            class101 << "Sports: " << student.progress_sports << endl;
-        }
-        else
-        {
-            cout << "\nUnable to access file....\n";
-        }
-        class101.close();//save and close file
-        cout << "\nStudent Record Edited Successfully\n";
-        break;
-    }
-    case 2: {
-        //delete record first
-        cout << "\nPlease enter the name of student you want to delete: ";
-        cin.getline(name, 50);
-        cin.ignore();
-
-        class102.open("class_102.txt", ios::in | ios::out | ios::binary);
-        temp.open("temp.txt", ios::in | ios::out | ios::binary);
-
-        while (getline(class102, line))
-        {
-
-            if (line != name && (!skip > 0))
+            if (class102.is_open())
             {
-                temp << line << endl;
+                while (!class102.eof())
+                {
+                    class102.read(reinterpret_cast<char*>(&student), sizeof(student));
+                    position = class102.tellg();
+
+                    if (strcmp(search_name, student.full_name_s) == 0)
+                    {
+                        cout << "\n\tRecord Found:\n";
+                        line();
+                        cout << "Full name: " << student.full_name_s;
+                        cout << "    Gender: " << student.gender_s;
+                        cout << "    Maths: " << student.progress_maths;
+                        cout << "    Science: " << student.progress_science;
+                        cout << "    Writing: " << student.progress_writing;
+                        cout << "    Reading: " << student.progress_reading;
+                        cout << "    Sports: " << student.progress_sports << endl;
+
+                        class102.seekp(position = (sizeof(student)));
+                        cout << "\n\n\tEdit Student Record";
+                        cout << "\n\tPlease enter student Information";
+                        cout << "\n\tMaths Score (0-100): ";
+                        cin >> student.maths;
+                        cout << "\n\tScience Score (0-100): ";
+                        cin >> student.science;
+                        cout << "\n\tWriting Score (0-100): ";
+                        cin >> student.writing;
+                        cout << "\n\tReading Score (0-100): ";
+                        cin >> student.reading;
+                        cout << "\n\tSports Score (0-100): ";
+                        cin >> student.sports;
+
+                        cout << "\n\n\tStudent Record Edit Successful\n";
+                        class102.write(reinterpret_cast<char*>(&student), sizeof(student));//store record in binary
+                        break;
+                    }
+                }
             }
             else
             {
-                if (skip == 0)
-                {
-                    skip = 6;//skip the next 6 lines also
-                }
-                else
-                {
-                    --skip;
-                }
+                cout << "\nUnable to access file...";
             }
+            class102.close();
+            break;
+
         }
-        class102.close();
-        temp.close();
-        remove("class_102.txt");
-        rename("temp.txt", "class_102.txt");
+        case 3: {
 
-        //add new record
-        class102.open("class_102.txt", ios::out | ios::app | ios::binary);//open class101 file
-
-        if (class102.is_open())
-        {
-            //read student data
+            class103.open("class_103.txt", ios::in | ios::out | ios::binary);
+            cout << "\n\tSearch Student in Class 103\n";
             cin.ignore();
-            cout << "\n\tEnter your full name: ";
+            cout << "\n\tEnter Student Full Name: ";
             cin.getline(student.full_name_s, 50);
-            cout << "\n\tGender(Male, Female, Non-Binary): ";
-            cin >> student.gender_s;
-            cout << "\n\tMaths Score (0-100): ";
-            cin >> student.maths;
-            cout << "\n\tScience Score (0-100): ";
-            cin >> student.science;
-            cout << "\n\tWriting Score (0-100): ";
-            cin >> student.writing;
-            cout << "\n\tReading Score (0-100): ";
-            cin >> student.reading;
-            cout << "\n\tSports Score (0-100): ";
-            cin >> student.sports;
 
-            student.progress_maths = LearningProgress(student.maths);
-            student.progress_science = LearningProgress(student.science);
-            student.progress_writing = LearningProgress(student.writing);
-            student.progress_reading = LearningProgress(student.reading);
-            student.progress_sports = LearningProgress(student.sports);
-
-            //open file for writing
-            ofstream class102;
-            class102.open("class_102.txt", ios::out | ios::app | ios::binary);
-
-            class102 << "Full name: " << student.full_name_s << endl;
-            class102 << "Gender: " << student.gender_s << endl;
-            class102 << "Maths: " << student.progress_maths << endl;
-            class102 << "Science: " << student.progress_science << endl;
-            class102 << "Writing: " << student.progress_writing << endl;
-            class102 << "Reading: " << student.progress_reading << endl;
-            class102 << "Sports: " << student.progress_sports << endl;
-        }
-        else
-        {
-            cout << "\nUnable to access file....\n";
-        }
-        class102.close();//save and close file
-        cout << "\nStudent Record Edited Successfully\n";
-        break;
-    }
-    case 3: {
-        //delete record first
-        cout << "\nPlease enter the name of student you want to delete: ";
-        cin.getline(name, 50);
-        cin.ignore();
-
-        class103.open("class_103.txt", ios::in | ios::out | ios::binary);
-        temp.open("temp.txt", ios::in | ios::out | ios::binary);
-
-        while (getline(class103, line))
-        {
-
-            if (line != name && (!skip > 0))
+            if (class103.is_open())
             {
-                temp << line << endl;
+                while (!class103.eof())
+                {
+                    class103.read(reinterpret_cast<char*>(&student), sizeof(student));
+                    position = class103.tellg();
+
+                    if (strcmp(search_name, student.full_name_s) == 0)
+                    {
+                        cout << "\n\tRecord Found:\n";
+                        line();
+                        cout << "Full name: " << student.full_name_s;
+                        cout << "    Gender: " << student.gender_s;
+                        cout << "    Maths: " << student.progress_maths;
+                        cout << "    Science: " << student.progress_science;
+                        cout << "    Writing: " << student.progress_writing;
+                        cout << "    Reading: " << student.progress_reading;
+                        cout << "    Sports: " << student.progress_sports << endl;
+
+                        class103.seekp(position = (sizeof(student)));
+                        cout << "\n\n\tEdit Student Record";
+                        cout << "\n\tPlease enter student Information";
+                        cout << "\n\tMaths Score (0-100): ";
+                        cin >> student.maths;
+                        cout << "\n\tScience Score (0-100): ";
+                        cin >> student.science;
+                        cout << "\n\tWriting Score (0-100): ";
+                        cin >> student.writing;
+                        cout << "\n\tReading Score (0-100): ";
+                        cin >> student.reading;
+                        cout << "\n\tSports Score (0-100): ";
+                        cin >> student.sports;
+
+                        cout << "\n\n\tStudent Record Edit Successful\n";
+                        class103.write(reinterpret_cast<char*>(&student), sizeof(student));//store record in binary
+                        break;
+                    }
+                }
             }
             else
             {
-                if (skip == 0)
-                {
-                    skip = 6;//skip the next 6 lines also
-                }
-                else
-                {
-                    --skip;
-                }
+                cout << "\nUnable to access file...";
             }
+            class103.close();
+            break;
         }
-        class103.close();
-        temp.close();
-        remove("class_103.txt");
-        rename("temp.txt", "class_103.txt");
-
-        //add new record
-        class103.open("class_103.txt", ios::out | ios::app | ios::binary);//open class101 file
-
-        if (class103.is_open())
-        {
-            //read student data
-            cin.ignore();
-            cout << "\n\tEnter your full name: ";
-            cin.getline(student.full_name_s, 50);
-            cout << "\n\tGender(Male, Female, Non-Binary): ";
-            cin >> student.gender_s;
-            cout << "\n\tMaths Score (0-100): ";
-            cin >> student.maths;
-            cout << "\n\tScience Score (0-100): ";
-            cin >> student.science;
-            cout << "\n\tWriting Score (0-100): ";
-            cin >> student.writing;
-            cout << "\n\tReading Score (0-100): ";
-            cin >> student.reading;
-            cout << "\n\tSports Score (0-100): ";
-            cin >> student.sports;
-
-            student.progress_maths = LearningProgress(student.maths);
-            student.progress_science = LearningProgress(student.science);
-            student.progress_writing = LearningProgress(student.writing);
-            student.progress_reading = LearningProgress(student.reading);
-            student.progress_sports = LearningProgress(student.sports);
-
-            //open file for writing
-            ofstream class103;
-            class103.open("class_103.txt", ios::out | ios::app | ios::binary);
-
-            class103 << "Full name: " << student.full_name_s << endl;
-            class103 << "Gender: " << student.gender_s << endl;
-            class103 << "Maths: " << student.progress_maths << endl;
-            class103 << "Science: " << student.progress_science << endl;
-            class103 << "Writing: " << student.progress_writing << endl;
-            class103 << "Reading: " << student.progress_reading << endl;
-            class103 << "Sports: " << student.progress_sports << endl;
+        case 4:edit_done = true;
+        default:
+            break;
         }
-        else
-        {
-            cout << "\nUnable to access file....\n";
-        }
-        class103.close();//save and close file
-        cout << "\nStudent Record Edited Successfully\n";
-        break;
-    }
-    case 4: {
-        student_screen();
-        break;
-    }
-    default:cout << "\nPlease enter correct option\n";
-        break;
-    }
+
+    } while (!edit_done);
+
 }
 
-void deleteStudent()
+
+
+void deleteStudent(char name[50])
 {
-    //temp file to swap
     int choice;
-    //bool isFound = false;
-    fstream temp;
-    int skip = 0;
+    fstream tempfile;
     string line;
-    char name[50];
-    //switch case to ask which file to edit
-    cout << "\n\t\t\tWelcome to Delete Student Record Page";
-    cout << "\t\t\t1. Class 101\n";
-    cout << "\t\t\t2. Class 102\n";
-    cout << "\t\t\t3. Class 103\n";
-    cout << "\t\t\t4. Return to previous page\n";
-    cout << "Please enter your choice: ";
-    cin >> choice;
+    bool delete_done = false;
 
-    switch (choice)
+    do
     {
-    case 1: {
-        cout << "\nPlease enter the name of student you want to delete: ";
-        cin.getline(name, 50);
-        cin.ignore();
+        cout << "\n\n\t\t\tWelcome to Delete Student Record Page";
+        cout << "\n\t\t\t1. Class 101";
+        cout << "\n\t\t\t2. Class 102";
+        cout << "\n\t\t\t3. Class 103";
+        cout << "\n\t\t\t4. Return to previous page";
+        cout << "\nPlease enter your choice: ";
+        cin >> choice;
+        //switch case to ask which file to edit
 
-        class101.open("class_101.txt", ios::in | ios::out | ios::binary);
-        temp.open("temp.txt", ios::in | ios::out | ios::binary);
-
-        while (getline(class101,line))
+        switch (choice)
         {
-            
-            if (line !=name && (!skip>0))
+        case 1: {
+            cout << "\nPlease enter the name of student you want to delete: ";
+            cin.ignore();
+            cin.getline(name, 50);
+
+            class101.open("class_101.txt", ios::in | ios::out | ios::binary);//open class 102 file
+            if (class101.is_open())
             {
-                temp << line << endl;
+                while (!class101.eof())
+                {
+                    while (class101.read(reinterpret_cast<char*>(&student), sizeof(student)))
+                    {
+                        if (strcmp(student.full_name_s, name) == 0)
+                        {
+                            cout << "\nRecord Found";
+                            cout << "\nStudent Name: " << student.full_name_s;
+                        }
+                        else
+                        {
+                            tempfile.open("temp.txt", ios::out | ios::app | ios::binary);
+                            tempfile.write(reinterpret_cast<char*>(&student), sizeof(student));
+                            tempfile.close();
+                        }
+                    }
+                }
             }
-            else
+            class101.close();
+            remove("class_101.txt");
+            rename("temp.txt", "class_101.txt");
+            break;
+
+        }
+        case 2: {
+
+            cout << "\nPlease enter the name of student you want to delete: ";
+            cin.ignore();
+            cin.getline(name, 50);
+
+            class102.open("class_102.txt", ios::in | ios::out | ios::binary);//open class 102 file
+            if (class102.is_open())
             {
-                if (skip==0)
+                while (!class102.eof())
                 {
-                    skip = 6;//skip the next 6 lines also
-                }
-                else
-                {
-                    --skip;
+                    while (class102.read(reinterpret_cast<char*>(&student), sizeof(student)))
+                    {
+                        if (strcmp(student.full_name_s, name) == 0)
+                        {
+                            cout << "\nRecord Found";
+                            cout << "\nStudent Name: " << student.full_name_s;
+                        }
+                        else
+                        {
+                            tempfile.open("temp.txt", ios::out | ios::app | ios::binary);
+                            tempfile.write(reinterpret_cast<char*>(&student), sizeof(student));
+                            tempfile.close();
+                        }
+                    }
                 }
             }
+            class102.close();
+            remove("class_102.txt");
+            rename("temp.txt", "class_102.txt");
+            break;
+
+        }
+        case 3: {
+
+            cout << "\nPlease enter the name of student you want to delete: ";
+            cin.ignore();
+            cin.getline(name, 50);
+
+            class103.open("class_103.txt", ios::in | ios::out | ios::binary);//open class 101 file
+            if (class103.is_open())
+            {
+                while (!class103.eof())
+                {
+                    while (class103.read(reinterpret_cast<char*>(&student), sizeof(student)))
+                    {
+                        if (strcmp(student.full_name_s, name) == 0)
+                        {
+                            cout << "\nRecord Found";
+                            cout << "\nStudent Name: " << student.full_name_s;
+                        }
+                        else
+                        {
+                            tempfile.open("temp.txt", ios::out | ios::app | ios::binary);
+                            tempfile.write(reinterpret_cast<char*>(&student), sizeof(student));
+                            tempfile.close();
+                        }
+                    }
+                }
+            }
+            class103.close();
+            remove("class_103.txt");
+            rename("temp.txt", "class_103.txt");
+            break;
+
+        }
+        case 4: {
+            delete_done = true;
+            student_screen();
+            break;
         }
 
-        cout << "\t\t\tThe record with the name " << name << " has been deleted if existed\n";
-        class101.close();
-        temp.close();
-        remove("class_101.txt");
-        rename("temp.txt", "class_101.txt");
-        break;
-    }
-    case 2: {
-        cout << "\nPlease enter the name of student you want to delete: ";
-        cin.getline(name, 50);
-        cin.ignore();
-
-        class102.open("class_102.txt", ios::in | ios::out | ios::binary);
-        temp.open("temp.txt", ios::in | ios::out | ios::binary);
-
-        while (getline(class102, line))
-        {
-
-            if (line != name && (!skip > 0))
-            {
-                temp << line << endl;
-            }
-            else
-            {
-                if (skip == 0)
-                {
-                    skip = 6;//skip the next 6 lines also
-                }
-                else
-                {
-                    --skip;
-                }
-            }
+        default:cout << "\nInvalid choice, please enter correct number...";
+            break;
         }
 
-        cout << "\t\t\tThe record with the name " << name << " has been deleted if existed\n";
-        class102.close();
-        temp.close();
-        remove("class_102.txt");
-        rename("temp.txt", "class_102.txt");
-        break;
-    }
-    case 3: {
-        cout << "\nPlease enter the name of student you want to delete: ";
-        cin.getline(name, 50);
-        cin.ignore();
-
-        class103.open("class_103.txt", ios::in | ios::out | ios::binary);
-        temp.open("temp.txt", ios::in | ios::out | ios::binary);
-
-        while (getline(class103, line))
-        {
-
-            if (line != name && (!skip > 0))
-            {
-                temp << line << endl;
-            }
-            else
-            {
-                if (skip == 0)
-                {
-                    skip = 6;//skip the next 6 lines also
-                }
-                else
-                {
-                    --skip;
-                }
-            }
-        }
-
-        cout << "\t\t\tThe record with the name " << name << " has been deleted if existed\n";
-        class103.close();
-        temp.close();
-        remove("class_103.txt");
-        rename("temp.txt", "class_103.txt");
-        break;
-    }
-    case 4: {
-        student_screen();
-        break;
-    }
-    default: cout << "\nPlease enter correct choice.\n";
-        break;
-    }
+    } while (!delete_done);
+    
 }
 
 
@@ -1033,73 +958,86 @@ void displayStudent()
 {
     //display the way it is
     int choice;
+    bool display_done = false;
 
-    cout << "\n\t\t\tWelcome to Display Student Record Page";
-    cout << "\t\t\t1. Class 101\n";
-    cout << "\t\t\t2. Class 102\n";
-    cout << "\t\t\t3. Class 103\n";
-    cout << "\t\t\t4. Return to previous page\n";
-    cout << "Please enter your choice: ";
-    cin >> choice;
-
-    switch (choice)
+    do
     {
-    case 1: {
+        system("CLS");
+        line();
+        cout << "\n\t\t\tWelcome to Display Student Record Page";
+        line();
+        cout << "\n\t\t\t1. Class 101";
+        cout << "\n\t\t\t2. Class 102";
+        cout << "\n\t\t\t3. Class 103";
+        cout << "\n\t\t\t4. Return to previous page\n";
+        cout << "Please enter your choice: ";
+        cin >> choice;
 
-        class101.open("class_101.txt", ios::in | ios::binary);
-        cout << "\n\t\t\tAll Student Record in Class 101\n";
-
-        if (class101.is_open())
+        switch (choice)
         {
-            string line;
-            while (getline(class101,line))
+        case 1: {
+
+            class101.open("class_101.txt", ios::in | ios::binary);
+            cout << "\n\t\t\tAll Student Record in Class 101\n";
+
+            if (class101.is_open())
             {
-                cout << line << endl;
+                string line;
+                while (getline(class101, line))
+                {
+                    cout << line << endl;
+
+                }
+                _getch();
+                class101.close();
             }
-            class101.close();
+
+            break;
+        }
+        case 2: {
+
+            class102.open("class_102.txt", ios::in | ios::binary);
+            cout << "\n\t\t\tAll Student Record in Class 101\n";
+
+            if (class102.is_open())
+            {
+                string line;
+                while (getline(class102, line))
+                {
+                    cout << line << endl;
+                }
+                _getch();
+                class102.close();
+            }
+            break;
+        }
+        case 3: {
+            class103.open("class_103.txt", ios::in | ios::binary);
+            cout << "\n\t\t\tAll Student Record in Class 101\n";
+
+            if (class103.is_open())
+            {
+                string line;
+                while (getline(class103, line))
+                {
+                    cout << line << endl;
+                }
+                _getch();
+                class103.close();
+            }
+
+            break;
+        }
+        case 4: {
+            display_done = true;
+            student_screen();
+            break;
+        }
+        default:cout << "\nPlease enter correct choice\n";
+            break;
         }
 
-        break;
-    }
-    case 2: {
-
-        class102.open("class_102.txt", ios::in | ios::binary);
-        cout << "\n\t\t\tAll Student Record in Class 101\n";
-
-        if (class102.is_open())
-        {
-            string line;
-            while (getline(class102, line))
-            {
-                cout << line << endl;
-            }
-            class102.close();
-        }
-        break;
-    }
-    case 3: {
-        class103.open("class_103.txt", ios::in | ios::binary);
-        cout << "\n\t\t\tAll Student Record in Class 101\n";
-
-        if (class103.is_open())
-        {
-            string line;
-            while (getline(class103, line))
-            {
-                cout << line << endl;
-            }
-            class103.close();
-        }
-
-        break;
-    }
-    case 4: {
-        student_screen();
-        break;
-    }
-    default:cout << "\nPlease enter correct choice\n";
-        break;
-    }
+    } while (!display_done);
 }
 
 string LearningProgress(int score)
@@ -1110,7 +1048,7 @@ string LearningProgress(int score)
     }
     else if (score < 50)
     {
-        return "Help";
+        return "Help Needed";
     }
     else
     {
@@ -1125,6 +1063,7 @@ void parent_screen()//Zack
 
     do
     {
+        system("CLS");
         cout << "\n\t\t\tWelcome! Parent!";
         line();
         cout << "\n\t\t\t1. New Parent/Student Registration";
@@ -1141,6 +1080,8 @@ void parent_screen()//Zack
             login_p(); break;
         }
         default:cout << "Please enter a value between 1 and 2.\n";
+            _getch();
+            system("CLS");
             break;
         }
     } while (choice == 1 || choice == 2);
@@ -1156,7 +1097,7 @@ void register_p()
 
     ofstream ParentFile;
     //open file to write
-    ParentFile.open("parent.txt", ios::out | ios::app | ios::binary);
+    ParentFile.open("Parent.txt", ios::out | ios::app | ios::binary);
 
     if (ParentFile.is_open())
     {
@@ -1174,34 +1115,24 @@ void register_p()
         cin.ignore();
         Gotoxy(30, 5);
         cin.getline(newParent.full_name_p, 50);
-
         Gotoxy(42, 6);
         cin >> newParent.gender_p;
-
         Gotoxy(23, 7);
         cin >> newParent.dob_p;
-
         Gotoxy(23, 8);
         cin >> newParent.email_p;
-
         Gotoxy(24, 9);
         cin >> newParent.contact_no_p;
-
         Gotoxy(20, 10);
         cin >> newParent.child_name_p;
-
         Gotoxy(35, 11);
         cin >> newParent.caregiver_name_p;
-
         Gotoxy(34, 12);
         cin >> newParent.emergency_no_p;
-
         Gotoxy(29, 13);
         cin >> newParent.username_p;
-
         Gotoxy(29, 14);
         cin >> newParent.password_p;
-
         cin.ignore();
 
         ParentFile << newParent.full_name_p << endl;
@@ -1215,12 +1146,15 @@ void register_p()
         ParentFile << newParent.username_p << endl;
         ParentFile << newParent.password_p << endl;
 
-    } 
+    }
 
     ParentFile.close();//close file, save and store data
     line();
     cout << "\t\t\tRegistration Successful!";
     line();
+    _getch();
+    system("CLS");
+    login_p();
 }
 
 void login_p()
@@ -1232,7 +1166,7 @@ void login_p()
     bool isFound = false;
     do
     {
-
+        system("CLS");
         cout << "\nEnter your username: ";
         cin >> usernameSearch_p;
         cout << "Enter your password: ";
@@ -1255,7 +1189,7 @@ void login_p()
                 {
                     //if validated, lead to another screen - student screenis
                     isFound = true;
-                    student_screen();//nested scenario, after login, show nested student record menu
+                    parent_dash();//nested scenario, after login, show nested student record menu
                     break;
                 }
                 else
@@ -1267,6 +1201,7 @@ void login_p()
         if (isFound == false)
         {
             cout << "Invalid username and password, please try again...\n";
+            _getch();
         }
         i++;
         ParentFile.close();
@@ -1279,19 +1214,250 @@ void login_p()
         }
     } while (i < 3);
 
+}
 
-    if (i==2)
+void parent_dash()
+{
+    int option;
+
+    system("CLS");
+    line();
+    cout << "\t\tParent DashBoard";
+    line();
+    cout << "\n\t\t1) Edit Profile";
+    cout << "\n\t\t2) View Student Details";
+    cout << "\n\n\t\tEnter your choice: ";
+    cin >> option;
+
+    switch (option)
     {
-        system("CLS");
-        cout << "Too many wrong attemps";
-        line();
-        exit;
+    case 1: {
+
+        break;
     }
+    case 2: {
+        student_screen();
+        break;
+    }
+    default:cout << "\nInvalid option, please choose between 1 and 2" << endl;
+        _getch();
+        system("CLS");
+        break;
+    }
+
+}
+
+void school_notice()
+{
+
 
 }
 
 void admin_screen()//Zack
 {
+    string Admin_Password;
+    string Admin_Attempt;
+    Admin_Password = "Password01";
 
+    line();
+    cout << "\t\tAdmin Login Page";
+    line();
+
+    cout << "Password: ";
+    cin >> Admin_Attempt;
+
+    if (Admin_Attempt == Admin_Password)
+    {
+        Admin_Dash();
+    }
+    else
+    {
+        cout << "Incorrect Password";
+        _getch();
+        main_menu();
+    }
+
+
+}
+
+void Admin_Dash()
+{
+    int option;
+    system("CLS");
+    line();
+    cout << "\n\t\tWelcome Admin";
+    line();
+
+    cout << "\n\n\t\t1) View Class Records";
+    cout << "\n\t\t2) View Parent Records";
+    cout << "\n\t\t3) View Student Page";
+    cout << "\n\t\t4) Create Report";
+    cout << "\n\n\t\tEnter your choice: ";
+    cin >> option;
+
+    switch (option)
+    {
+    case 1: {
+        Class_Records();
+        break;
+    }
+    case 2: {
+        Parent_Page();
+        break;
+    }
+    case 3: {
+        student_screen();
+        break;
+    }
+    case 4: {
+        report();
+        break;
+    }
+    default:cout << "\nInvalid option, please choose between 1 and 4";
+        _getch();
+        system("CLS");
+        break;
+    }
+
+
+}
+
+void Class_Records()
+{
+    int option;
+    system("CLS");
+    line();
+    cout << "Welcome to Class Record Menu!" << endl;
+    cout << "\n\t\t\t1) View Details";
+    cout << "\n\t\t\t2) Edit Student Records";
+    line();
+
+    cout << "\nEnter your choice: ";
+    cin >> option;
+
+    switch (option)
+    {
+    case 1: {
+        displayStudent();
+        break;
+    }
+    case 2: {
+        editStudent(search_name);
+        break;
+    }
+    default:cout << "\nInvalid option, please choose between 1 and 2";
+        _getch();
+        system("CLS");
+        break;
+    }
+
+}
+
+void Parent_Page()
+{
+    int option;
+
+    system("CLS");
+    line();
+    cout << "Welcome to Parent Record Menu!" << endl;
+    cout << "\n\t\t\t1) View Details";
+    cout << "\n\t\t\t2) Edit Parent Account";
+    line();
+
+    cout << "\nEnter your choice: ";
+    cin >> option;
+
+    switch (option)
+    {
+    case 1: {
+
+        break;
+    }
+    case 2: {
+
+        break;
+    }
+    default:cout << "\nInvalid option, please choose between 1 and 2";
+        _getch();
+        system("CLS");
+        break;
+    }
+}
+
+
+void report()
+{
+    int choice;
+    system("CLS");
+    cout << "Student Report Sheet";
+
+    cout << "What class is the student from?";
+    cout << "\n\t\t\t1. Class 101";
+    cout << "\n\t\t\t2. Class 102";
+    cout << "\n\t\t\t3. Class 103";
+    cout << "Please enter your choice: ";
+    cin >> choice;
+
+    switch (choice)
+    {
+    case 1: {
+
+        class101.open("class_101.txt", ios::in | ios::binary);
+        cout << "\n\t\t\tAll Student Record in Class 101\n";
+
+        if (class101.is_open())
+        {
+            string line;
+            while (getline(class101, line))
+            {
+                cout << line << endl;
+            }
+            _getch();
+            class101.close();
+        }
+
+        break;
+    }
+    case 2: {
+
+        class102.open("class_102.txt", ios::in | ios::binary);
+        cout << "\n\t\t\tAll Student Record in Class 101\n";
+
+        if (class102.is_open())
+        {
+            string line;
+            while (getline(class102, line))
+            {
+                cout << line << endl;
+            }
+            _getch();
+            class102.close();
+        }
+        break;
+    }
+    case 3: {
+        class103.open("class_103.txt", ios::in | ios::binary);
+        cout << "\n\t\t\tAll Student Record in Class 101\n";
+
+        if (class103.is_open())
+        {
+            string line;
+            while (getline(class103, line))
+            {
+                cout << line << endl;
+            }
+            _getch();
+            class103.close();
+        }
+
+        break;
+    }
+
+
+    default:cout << "\nPlease enter correct choice\n";
+        _getch();
+        system("CLS");
+        break;
+    }
 }
 

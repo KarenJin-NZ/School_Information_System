@@ -1,0 +1,7 @@
+Full name: Apple Smith
+Gender: Female
+Maths: Achieved
+Science: Achieved
+Writing: Achieved
+Reading: Achieved
+Sports: Achieved
