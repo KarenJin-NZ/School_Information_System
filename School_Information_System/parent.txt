@@ -8,3 +8,23 @@ Caregiver
 0236457
 parent
 parent123
+Jerry Green
+Male
+12/12/1990
+jerry@gmail.com
+022789789
+Alex
+Marry Green
+0238797
+jerry
+password
+Rob Jones
+Male
+23/12/1987
+rob@gmail.com
+023678678
+Ron Jones
+Rose Jones
+02076876
+rob
+password

@@ -1,7 +1,1 @@
-Full name: Apple Smith
-Gender: Female
-Maths: Achieved
-Science: Achieved
-Writing: Achieved
-Reading: Achieved
-Sports: Achieved
+Full name: Karen Jin    Gender: Female    Maths: Achieved    Science: Progressing    Writing: Help Needed    Reading: Achieved    Sports: Progressing

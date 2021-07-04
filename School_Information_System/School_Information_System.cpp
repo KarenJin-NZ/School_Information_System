@@ -28,6 +28,7 @@ void addStudent();//add student record
 void editStudent(char []);//edit student record
 void deleteStudent(char[]);
 void displayStudent();//view student record
+void school_notice();
 string LearningProgress(int);//convert each subject score to learning progress, >=80:Achieved; >=50 and <80: Progressing; <50: Help
 
 //declare structure
@@ -51,8 +52,8 @@ struct Parent //structure for parent record
     string dob_p;
     string email_p;
     string contact_no_p;
-    string child_name_p;
-    string caregiver_name_p;
+    char child_name_p[50];
+    char caregiver_name_p[50];
     string emergency_no_p;
     char username_p[20];
     char password_p[20];
@@ -243,37 +244,26 @@ void register_t()
     if (teacherFile.is_open())
     {
         //read teacher data
+        cin.ignore();
         cout << "\n\tEnter your full name: ";
-        cout << "\n\tGender(Male, Female, Non-Binary): ";
-        cout << "\n\tDate of Birth: ";
-        cout << "\n\tEmail address: ";
-        cout << "\n\tContact Number: ";
-        cout << "\n\tClassroom number (101/102/103): ";
-        cout << "\n\tWhich year do you teach (number): ";
-        cout << "\n\tEnter your username: ";
-        cout << "\n\tEnter your password: ";
-
-
-        cin.ignore();
-        Gotoxy(30, 5);
         cin.getline(newTeacher.full_name_t, 50);
-        Gotoxy(42, 6);
+        cout << "\tGender(Male, Female, Non-Binary): ";
         cin >> newTeacher.gender_t;
-        Gotoxy(23, 7);
+        cout << "\tDate of Birth: ";
         cin >> newTeacher.dob_t;
-        Gotoxy(23, 8);
+        cout << "\tEmail address: ";
         cin >> newTeacher.email_t;
-        Gotoxy(24, 9);
+        cout << "\tContact Number: ";
         cin >> newTeacher.contact_no_t;
-        Gotoxy(40, 10);
+        cout << "\tClassroom number (101/102/103): ";
         cin >> newTeacher.class_no_t;
-        Gotoxy(42, 11);
+        cout << "\tWhich year do you teach (number): ";
         cin >> newTeacher.year_t;
-        Gotoxy(29, 12);
-        cin >> newTeacher.username_t;
-        Gotoxy(29, 13);
-        cin >> newTeacher.password_t;
         cin.ignore();
+        cout << "\tEnter your username: ";
+        cin >> newTeacher.username_t;
+        cout << "\tEnter your password: ";
+        cin >> newTeacher.password_t;
 
         teacherFile << newTeacher.full_name_t << endl;
         teacherFile << newTeacher.gender_t << endl;
@@ -288,14 +278,14 @@ void register_t()
 
     teacherFile.close();//save and close file
     line();
-    cout << "\t\t\t\tRegistration Successful!!!";
+    cout << "\t\t\tRegistration Successful!!!";
     line();
-    student_screen();//after completing registration, direct to student screen (login)
+    student_screen();//after completing registration, direct to student screen
     _getch();
     system("CLS");
 }
 
-void login_t()
+void login_t()//preset username: jane; preset password: password
 {
 
     char usernameSearch_t[20];
@@ -342,14 +332,6 @@ void login_t()
         }
         i++;
         teacherFile.close();
-        //if (i == 3 && isFound==false)
-        //{
-        //    cout << "\nToo Many Attempts!!!Please try later...\n";
-        //    line();
-        //    break;
-        //    //main();
-        //    //exit;
-        //}
 
     } while (i < 3);
 
@@ -962,7 +944,6 @@ void displayStudent()
 
     do
     {
-        system("CLS");
         line();
         cout << "\n\t\t\tWelcome to Display Student Record Page";
         line();
@@ -1057,16 +1038,15 @@ string LearningProgress(int score)
 }
 
 
-void parent_screen()//Zack
+void parent_screen()
 {
     int choice = 0;
 
     do
     {
-        system("CLS");
         cout << "\n\t\t\tWelcome! Parent!";
         line();
-        cout << "\n\t\t\t1. New Parent/Student Registration";
+        cout << "\n\t\t\t1. New Parent Registration";
         cout << "\n\t\t\t2. Parent Login";
         line();
         cout << "\nEnter your choice: ";
@@ -1080,8 +1060,6 @@ void parent_screen()//Zack
             login_p(); break;
         }
         default:cout << "Please enter a value between 1 and 2.\n";
-            _getch();
-            system("CLS");
             break;
         }
     } while (choice == 1 || choice == 2);
@@ -1090,9 +1068,8 @@ void parent_screen()//Zack
 
 void register_p()
 {
-    system("CLS");
     line();
-    cout << "Hello! Welcome to the Parent/Student registration process";
+    cout << "\t\t\tHello! Welcome to the Parent registration process";
     line();
 
     ofstream ParentFile;
@@ -1101,39 +1078,29 @@ void register_p()
 
     if (ParentFile.is_open())
     {
+        cin.ignore();
         cout << "\n\tEnter your full name: ";
-        cout << "\n\tGender(Male, Female, Non-Binary): ";
-        cout << "\n\tDate of Birth: ";
-        cout << "\n\tEmail address: ";
-        cout << "\n\tContact Number: ";
-        cout << "\n\tChild Name: ";
-        cout << "\n\tAdditional Caregiver Name: ";
-        cout << "\n\tEmergency Contact Number: ";
-        cout << "\n\tEnter your username: ";
-        cout << "\n\tEnter your password: ";
-
-        cin.ignore();
-        Gotoxy(30, 5);
         cin.getline(newParent.full_name_p, 50);
-        Gotoxy(42, 6);
+        cout << "\tGender(Male, Female, Non-Binary): ";
         cin >> newParent.gender_p;
-        Gotoxy(23, 7);
+        cout << "\tDate of Birth: ";
         cin >> newParent.dob_p;
-        Gotoxy(23, 8);
+        cout << "\tEmail address: ";
         cin >> newParent.email_p;
-        Gotoxy(24, 9);
+        cout << "\tContact Number: ";
         cin >> newParent.contact_no_p;
-        Gotoxy(20, 10);
-        cin >> newParent.child_name_p;
-        Gotoxy(35, 11);
-        cin >> newParent.caregiver_name_p;
-        Gotoxy(34, 12);
-        cin >> newParent.emergency_no_p;
-        Gotoxy(29, 13);
-        cin >> newParent.username_p;
-        Gotoxy(29, 14);
-        cin >> newParent.password_p;
         cin.ignore();
+        cout << "\tChild Name: ";
+        cin.getline(newParent.child_name_p, 50);
+        cout << "\tAdditional Caregiver Name: ";
+        cin.getline(newParent.caregiver_name_p, 50);
+        cout << "\tEmergency Contact Number: ";
+        cin >> newParent.emergency_no_p;
+        cin.ignore();
+        cout << "\tEnter your username: ";
+        cin >> newParent.username_p;
+        cout << "\tEnter your password: ";
+        cin >> newParent.password_p;
 
         ParentFile << newParent.full_name_p << endl;
         ParentFile << newParent.gender_p << endl;
@@ -1152,12 +1119,10 @@ void register_p()
     line();
     cout << "\t\t\tRegistration Successful!";
     line();
-    _getch();
-    system("CLS");
-    login_p();
+    parent_dash();
 }
 
-void login_p()
+void login_p()//preset username:parent; preset password: parent123
 {
 
     char usernameSearch_p[20];
@@ -1166,7 +1131,6 @@ void login_p()
     bool isFound = false;
     do
     {
-        system("CLS");
         cout << "\nEnter your username: ";
         cin >> usernameSearch_p;
         cout << "Enter your password: ";
@@ -1198,58 +1162,74 @@ void login_p()
                 }
             }
         }
-        if (isFound == false)
+        if (isFound == false && i<2)
         {
             cout << "Invalid username and password, please try again...\n";
             _getch();
         }
         i++;
         ParentFile.close();
-        if (i == 3)
-        {
-            cout << "\nToo Many Attempts!!!Please try later...\n";
-            line();
-            main();
-            //exit;
-        }
+
     } while (i < 3);
+
+    if (i == 3 && isFound==false)
+    {
+        cout << "\nToo Many Attempts!!!Send you Back to Main Screen!!!Please try later...\n";
+        line();
+        main();
+    }
 
 }
 
 void parent_dash()
 {
     int option;
+    bool parent_done = false;
 
-    system("CLS");
-    line();
-    cout << "\t\tParent DashBoard";
-    line();
-    cout << "\n\t\t1) Edit Profile";
-    cout << "\n\t\t2) View Student Details";
-    cout << "\n\n\t\tEnter your choice: ";
-    cin >> option;
-
-    switch (option)
+    do
     {
-    case 1: {
+        line();
+        cout << "\t\t\tParent DashBoard";
+        line();
+        cout << "\n\t\t\t1) View Children Report";
+        cout << "\n\t\t\t2) View School Notice";
+        cout << "\n\t\t\t3) Return to Main Menu";
+        cout << "\n\n\t\t\tEnter your choice: ";
+        cin >> option;
 
-        break;
-    }
-    case 2: {
-        student_screen();
-        break;
-    }
-    default:cout << "\nInvalid option, please choose between 1 and 2" << endl;
-        _getch();
-        system("CLS");
-        break;
-    }
+        switch (option)
+        {
+        case 1: {
+
+            break;
+        }
+        case 2: {
+            school_notice();
+            break;
+        }
+        case 3: {
+            parent_done = true;
+            main();
+        }
+        default:cout << "\nInvalid option, please choose between 1 and 2" << endl;
+            break;
+        }
+
+    } while (!parent_done);
 
 }
+
 
 void school_notice()
 {
 
+    line();
+    cout << "\n\t\t\tWelcom to School Notice to find out our latest events!";
+    line();
+    cout << "\t\t\tCross Country Event: 4 July 2021";
+    cout << "\n\t\t\tMufty Day: 8 August 2021";
+    cout << "\n\t\t\tSwimming Competition: 11 November 2021";
+    line();
 
 }
 
@@ -1260,7 +1240,7 @@ void admin_screen()//Zack
     Admin_Password = "Password01";
 
     line();
-    cout << "\t\tAdmin Login Page";
+    cout << "\t\t\tAdmin Login Page";
     line();
 
     cout << "Password: ";
@@ -1277,15 +1257,13 @@ void admin_screen()//Zack
         main_menu();
     }
 
-
 }
 
 void Admin_Dash()
 {
     int option;
-    system("CLS");
     line();
-    cout << "\n\t\tWelcome Admin";
+    cout << "\n\t\t\tWelcome Admin";
     line();
 
     cout << "\n\n\t\t1) View Class Records";
@@ -1298,7 +1276,7 @@ void Admin_Dash()
     switch (option)
     {
     case 1: {
-        Class_Records();
+        displayStudent();
         break;
     }
     case 2: {
@@ -1314,12 +1292,9 @@ void Admin_Dash()
         break;
     }
     default:cout << "\nInvalid option, please choose between 1 and 4";
-        _getch();
-        system("CLS");
+
         break;
     }
-
-
 }
 
 void Class_Records()
@@ -1355,32 +1330,20 @@ void Class_Records()
 
 void Parent_Page()
 {
-    int option;
 
-    system("CLS");
-    line();
-    cout << "Welcome to Parent Record Menu!" << endl;
-    cout << "\n\t\t\t1) View Details";
-    cout << "\n\t\t\t2) Edit Parent Account";
-    line();
+    ParentFile.open("parent.txt", ios::in | ios::binary);
+    cout << "\n\t\t\tAll Parent Record\n";
 
-    cout << "\nEnter your choice: ";
-    cin >> option;
-
-    switch (option)
+    if (ParentFile.is_open())
     {
-    case 1: {
+        string line;
+        while (getline(ParentFile, line))
+        {
+            cout << line << endl;
 
-        break;
-    }
-    case 2: {
-
-        break;
-    }
-    default:cout << "\nInvalid option, please choose between 1 and 2";
+        }
         _getch();
-        system("CLS");
-        break;
+        ParentFile.close();
     }
 }
 

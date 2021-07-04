@@ -1,12 +1,3 @@
-df
-ga
-gd
-g
-fg
-0
-0
-
-
 karen
 femaile
 16/02/1989
@@ -15,4 +6,13 @@ karen@gmail.com
 101
 8
 karen
+password
+Jane Smith
+Female
+18/12/1990
+jane@gmail.com
+02298983
+101
+8
+jane
 password
